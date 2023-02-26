@@ -4,30 +4,23 @@ using namespace std;
 int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
-    int sum=0, n, L, i,o;
-    int head, tail;
-    int order[200005]={};
-    set< pair<int,int> > stick;
-    set< pair<int,int> >::iterator itr;
-    cin >> n >> L;
-    stick.insert(make_pair(0,L));
-    for(int k=1;k<=n;k++){
-        cin >> i >> o;
-        order[o]=i;
-    } 
-    for(int k=1;k<=n;k++){
-        for(itr = stick.begin(); itr!=stick.end(); itr++){
-            if(itr->first<order[k] &&itr->second>order[k]){
-                head=itr->second;
-                tail=itr->first;
-                stick.erase(itr);
-                sum+=head-tail;
-                stick.insert(make_pair(order[k],head));
-                stick.insert(make_pair(tail,order[k]));
-                break;
-            }
-        }
+    int n,l;
+    long long sum=0;
+    set<int> stick;
+    vector<pair<int, int>> order;
+    cin >> n >> l;
+    stick.insert(0);
+    stick.insert(l);
+    for(int i=1,a,b;i<=n;i++){
+        cin >> a >> b;
+        order.push_back({b,a});
+    }
+    sort(order.begin(),order.end());
+    for(vector <pair<int,int>>::iterator itr = order.begin();itr!=order.end();itr++){
+        int x = (*itr).second;
+        stick.insert(x);
+        set<int>::iterator loc = stick.lower_bound(x);
+        sum+=(*next(loc))-(*prev(loc));
     }
     cout << sum << "\n";
-    return 0;
 }
